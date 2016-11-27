@@ -1,0 +1,39 @@
+@import './_config';
+@import './_font';
+@import '~react-toolbox/lib/colors';
+@import '~react-toolbox/lib/commons';
+
+
+:global {
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+:root {
+  body {
+    position: absolute;
+    color: $palette-grey-900;
+    background-color: $palette-grey-200;
+  }
+
+  main {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "react-offline-hybrid-boilerplate",
+  "productName": "React Offline Hybrid Boilerplate",
+  "version": "0.0.1",
+  "main": "./main.js",
+  "description": "React Offline Hybrid Boilerplate with Electron and browser's offline resources, and PouchDB as database",
+  "author": {
+    "name": "Julio Betta",
+    "email": "juliobetta@gmail.com",
+    "url": "https://github.com/juliobetta"
+  },
+  "dependencies": {
+    "pouchdb": "^6.0.7",
+    "memdown": "^1.2.2",
+    "source-map-support": "^0.4.3"
+  }
+}
