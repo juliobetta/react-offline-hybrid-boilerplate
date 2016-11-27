@@ -2,7 +2,7 @@
 
 > This boilerplate project is based on [https://github.com/chentsulin/electron-react-boilerplate](https://github.com/chentsulin/electron-react-boilerplate).
 
-Hybrid ([Electron](http://electron.atom.io/)  Browser) application boilerplate using:
+Hybrid ([Electron](http://electron.atom.io/) + Browser [offline mode]) application boilerplate using:
 * [React](https://facebook.github.io/react/)
 * [Redux](https://github.com/reactjs/redux)
 * [React Router](https://github.com/reactjs/react-router)
