@@ -44,15 +44,16 @@ module.exports = validate({
 
   module: {
     loaders:[
-      { test: /\.jsx?$/, loaders: ['babel'], exclude: /node_modules/ },
-      { test: /\.json$/, loader: 'json' }
+      { test: /\.jsx?$/, loaders: ['babel-loader'], exclude: /node_modules/ },
+      { test: /\.json$/, loader: 'json-loader' }
     ]
   },
 
   // https://webpack.github.io/docs/configuration.html#resolve
   resolve: {
-    extensions: ['', '.js', '.jsx', '.scss'],
+    extensions: ['.js', '.jsx', '.scss'],
     modules: [
+      path.resolve(__dirname, `${root}/app`),
       path.resolve(__dirname, `${root}/app/scripts`),
       path.resolve(__dirname, `${root}/node_modules`)
     ]

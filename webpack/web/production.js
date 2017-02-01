@@ -4,7 +4,6 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const validate = require('webpack-validator');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
@@ -12,7 +11,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const baseConfig = require('./base');
 
-const Joi = validate.Joi;
+const publicPath = '/';
 process.env.BABEL_ENV = 'production';
 
 const root = '../..';
@@ -21,7 +20,8 @@ const config = validate(merge(baseConfig, {
   devtool: 'cheap-module-source-map',
 
   output: {
-    path: path.join(__dirname, '../../build'),
+    publicPath,
+    path: path.join(__dirname, '../../www'),
     filename: 'bundle.[name].[chunkhash].js',
     pathinfo: false
   },
@@ -30,15 +30,15 @@ const config = validate(merge(baseConfig, {
     loaders: [
       {
         test: /\.(css|scss)$/,
-        exclude: /\.\/app/,
+        exclude: /(\.\/app)/,
         loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style',
-          loader: 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass!toolbox'
+          fallbackLoader: 'style-loader',
+          loader: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass-loader!toolbox-loader'
         })
       },
       {
         test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?.*)?$/,
-        loader: 'file',
+        loader: 'file-loader',
         query: {
           name: 'assets/[name].[hash:20].[ext]'
         }
@@ -51,15 +51,24 @@ const config = validate(merge(baseConfig, {
     ]
   },
 
-  postcss: [ autoprefixer ],
-
-  toolbox: { theme: './app/theme/_config.scss' },
-
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        context: __dirname,
+        postcss: [autoprefixer],
+        toolbox: { theme: './app/theme/_config.scss' },
+      }
+    }),
+
     new OfflinePlugin({
+      publicPath,
+      relativePaths: false,
       ServiceWorker: {
         events: true,
         excludes: ['*.hot-update.*']
+      },
+      AppCache: {
+        publicPath: `${publicPath}/appcache`
       }
     }),
 
@@ -77,10 +86,8 @@ const config = validate(merge(baseConfig, {
 
     // NODE_ENV should be production so that modules do not perform certain development checks
     new webpack.DefinePlugin({
-      'process.env': {
-        'ENV'      : JSON.stringify('web'),
-        'NODE_ENV' : JSON.stringify('production')
-      }
+      'process.env.ENV'      : JSON.stringify('web'),
+      'process.env.NODE_ENV' : JSON.stringify('production')
     }),
 
     // Minify without warning messages and IE8 support

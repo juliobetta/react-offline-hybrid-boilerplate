@@ -4,18 +4,16 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const validate = require('webpack-validator');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const baseConfig = require('./base');
 
-const Joi = validate.Joi;
 
 process.env.BABEL_ENV = 'production';
 
-const config = validate(merge(baseConfig, {
+const config = merge(baseConfig, {
   devtool: 'cheap-module-source-map',
 
   entry: [
@@ -33,24 +31,27 @@ const config = validate(merge(baseConfig, {
     loaders: [
       {
         test: /\.(css|scss)$/,
-        exclude: /\.\/app/,
+        exclude: /(\.\/app)/,
         loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style',
-          loader: 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass!toolbox'
+          fallbackLoader: 'style-loader',
+          loader: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass-loader!toolbox-loader'
         })
       },
-      { test: /\.woff(\?.*)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.woff2(\?.*)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.ttf(\?.*)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.svg(\?.*)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' },
+      { test: /\.woff(\?.*)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.woff2(\?.*)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.ttf(\?.*)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
+      { test: /\.svg(\?.*)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' },
     ]
   },
 
-  postcss: [ autoprefixer ],
-
-  toolbox: { theme: './app/theme/_config.scss' },
-
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        context: __dirname,
+        postcss: [autoprefixer],
+        toolbox: { theme: './app/theme/_config.scss' }
+      }
+    }),
 
     // https://webpack.github.io/docs/list-of-plugins.html#occurrenceorderplugin
     // https://github.com/webpack/webpack/issues/864
@@ -63,8 +64,8 @@ const config = validate(merge(baseConfig, {
 
     // NODE_ENV should be production so that modules do not perform certain development checks
     new webpack.DefinePlugin({
-      'process.env.ENV'      : JSON.stringify('desktop'),
-      'process.env.NODE_ENV' : JSON.stringify('production'),
+      'process.env.ENV'        : JSON.stringify('desktop'),
+      'process.env.NODE_ENV'   : JSON.stringify('production')
     }),
 
     // Minify without warning messages and IE8 support
@@ -74,8 +75,6 @@ const config = validate(merge(baseConfig, {
         warnings: false
       }
     }),
-
-    new webpack.optimize.DedupePlugin(),
 
     new webpack.LoaderOptionsPlugin({
       minimize: true,
@@ -90,15 +89,6 @@ const config = validate(merge(baseConfig, {
   ],
   // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
   target: 'electron-renderer'
-}), {
-    schemaExtension: Joi.object({
-      sassLoader: Joi.any(),
-      toolbox: Joi.any(),
-      resolve: {
-        modules: Joi.any()
-      }
-    })
-  }
-);
+});
 
 module.exports = config;

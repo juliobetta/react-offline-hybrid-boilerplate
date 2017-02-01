@@ -13,7 +13,7 @@ const NODE_ENV = process.env.NODE_ENV || 'production';
 
 process.env.BABEL_ENV = 'production';
 
-module.exports = validate(merge(baseConfig, {
+module.exports = merge(baseConfig, {
   // devtool: 'source-map',
 
   entry: ['babel-polyfill', '../main.development'],
@@ -38,8 +38,8 @@ module.exports = validate(merge(baseConfig, {
     //   { raw: true, entryOnly: false }
     // ),
     new webpack.DefinePlugin({
-      'process.env.ENV'      : JSON.stringify('desktop'),
-      'process.env.NODE_ENV' : JSON.stringify(NODE_ENV),
+      'process.env.ENV'        : JSON.stringify('desktop'),
+      'process.env.NODE_ENV'   : JSON.stringify(NODE_ENV)
     })
   ],
 
@@ -60,12 +60,4 @@ module.exports = validate(merge(baseConfig, {
   },
 
   externals: []
-}), {
-  schemaExtension: Joi.object({
-    sassLoader: Joi.any(),
-    toolbox: Joi.any(),
-    resolve: {
-      modules: Joi.any()
-    }
-  })
 });

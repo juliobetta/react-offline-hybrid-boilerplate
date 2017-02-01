@@ -59,12 +59,12 @@
         "deb",
         "AppImage"
       ]
+    },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release",
+      "app": "build"
     }
-  },
-  "directories": {
-    "buildResources": "resources",
-    "output": "release",
-    "app": "build"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
@@ -112,10 +112,10 @@
     "css-loader": "^0.25.0",
     "devtron": "^1.4.0",
     "dotenv": "^2.0.0",
-    "electron": "1.4.7",
-    "electron-builder": "8.6.0",
-    "electron-devtools-installer": "^2.0.1",
-    "electron-rebuild": "^1.4.0",
+    "electron": "1.4.15",
+    "electron-builder": "12.2.0",
+    "electron-devtools-installer": "2.1.0",
+    "electron-rebuild": "1.5.7",
     "enzyme": "^2.5.1",
     "enzyme-redux": "^0.1.6",
     "eslint": "^3.9.0",
@@ -130,10 +130,10 @@
     "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-react": "^6.4.1",
     "express": "^4.14.0",
-    "extract-text-webpack-plugin": "^2.0.0-beta",
+    "extract-text-webpack-plugin": "^2.0.0-rc.2",
     "fbjs-scripts": "^0.7.1",
     "file-loader": "^0.9.0",
-    "html-webpack-plugin": "^2.24.0",
+    "html-webpack-plugin": "2.28.0",
     "http-proxy": "^1.14.0",
     "immutability-helper": "^2.0.0",
     "imports-loader": "^0.6.5",
@@ -150,8 +150,8 @@
     "opt-cli": "^1.5.1",
     "path": "^0.12.7",
     "postcss-loader": "^0.9.1",
-    "pouchdb-adapter-memory": "^6.0.7",
-    "progress-bar-webpack-plugin": "^1.9.0",
+    "pouchdb-adapter-memory": "6.1.1",
+    "progress-bar-webpack-plugin": "1.9.3",
     "react-addons-test-utils": "15.3.0",
     "redux-logger": "^2.7.4",
     "redux-mock-store": "^1.1.4",
@@ -163,21 +163,21 @@
     "tcomb": "^3.2.15",
     "toolbox-loader": "0.0.3",
     "url-loader": "^0.5.7",
-    "webpack": "2.1.0-beta.20",
-    "webpack-dev-middleware": "^1.8.4",
-    "webpack-dev-server": "2.1.0-beta.0",
-    "webpack-hot-middleware": "^2.13.1",
-    "webpack-merge": "^0.15.0",
-    "webpack-validator": "^2.2.9"
+    "webpack": "2.2.1",
+    "webpack-dev-middleware": "1.9.0",
+    "webpack-dev-server": "2.2.0",
+    "webpack-hot-middleware": "2.16.1",
+    "webpack-merge": "2.6.1",
+    "webpack-validator": "2.3.0"
   },
   "dependencies": {
     "axios": "^0.9.1",
     "classnames": "^2.2.5",
-    "electron-debug": "^1.0.1",
+    "electron-debug": "1.1.0",
     "invariant": "^2.2.1",
     "memdown": "^1.2.2",
     "normalize.css": "^4.2.0",
-    "pouchdb": "^6.0.7",
+    "pouchdb": "6.1.1",
     "pouchdb-find": "^0.10.3",
     "pouchdb-quick-search": "^1.2.0",
     "react": "^15.3.0",

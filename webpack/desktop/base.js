@@ -6,21 +6,19 @@ const path = require('path');
 const webpack = require('webpack');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const validate = require('webpack-validator');
 
-const Joi = validate.Joi;
 const root = '../..';
 
-module.exports = validate({
+module.exports = {
   context: path.resolve(__dirname, `${root}/app/scripts`),
 
   module: {
     loaders: [
-      { test: /\.jsx?$/, loaders: ['babel'], exclude: /node_modules/ },
-      { test: /\.json$/, loader: 'json' },
+      { test: /\.jsx?$/, loaders: ['babel-loader'], exclude: /node_modules/ },
+      { test: /\.json$/, loader: 'json-loader' },
       {
         test: require.resolve(`${root}/app/scripts/utils/database.js`),
-        loader: 'imports?memdown=memdown'
+        loader: 'imports-loader?memdown=memdown'
       }
     ]
   },
@@ -35,11 +33,11 @@ module.exports = validate({
 
   resolve: {
     modules: [
+      path.resolve(__dirname, `${root}/app`),
       path.resolve(__dirname, `${root}/app/scripts`),
       path.resolve(__dirname, `${root}/node_modules`)
     ],
-    extensions: ['', '.js', '.jsx', '.json'],
-    packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
+    extensions: ['.js', '.jsx', '.json']
   },
 
   plugins: [
@@ -53,10 +51,4 @@ module.exports = validate({
     'memdown',
     'bindings'
   ]
-}, {
-  schemaExtension: Joi.object({
-    resolve: {
-      modules: Joi.any()
-    }
-  })
-});
+};

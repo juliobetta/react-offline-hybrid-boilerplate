@@ -10,8 +10,8 @@
     "url": "https://github.com/juliobetta"
   },
   "dependencies": {
-    "pouchdb": "^6.0.7",
-    "memdown": "^1.2.2",
+    "pouchdb": "6.1.1",
+    "memdown": "1.2.4",
     "source-map-support": "^0.4.3"
   }
 }
