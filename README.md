@@ -11,7 +11,9 @@ Hybrid ([Electron](http://electron.atom.io/) + Browser [offline mode]) applicati
 * [PouchDB](https://github.com/pouchdb/pouchdb), "The Database that Syncs!"
 * [React Toolbox](http://github.com/react-toolbox/react-toolbox) to provide Material Design Components
 
-
+Web                        |  Desktop
+:-------------------------:|:-------------------------:
+![web](https://cloud.githubusercontent.com/assets/394147/22536172/ddd3260c-e8e6-11e6-9704-f913d6e735d1.png)  |  ![desktop](https://cloud.githubusercontent.com/assets/394147/22536165/cfceeec4-e8e6-11e6-8652-bb0dee017841.png)
 
 ## Install
 
