@@ -16,7 +16,7 @@ process.env.BABEL_ENV = 'production';
 
 const root = '../..';
 
-const config = validate(merge(baseConfig, {
+const config = merge(baseConfig, {
   devtool: 'cheap-module-source-map',
 
   output: {
@@ -45,7 +45,7 @@ const config = validate(merge(baseConfig, {
       },
       {
         test: require.resolve(`${root}/app/index.js`),
-        loader: 'imports?offlineRuntime=offline-plugin/runtime'
+        loader: 'imports-loader?offlineRuntime=offline-plugin/runtime'
       }
 
     ]
@@ -123,15 +123,6 @@ const config = validate(merge(baseConfig, {
       }
     })
   ]
-}), {
-    schemaExtension: Joi.object({
-      sassLoader: Joi.any(),
-      toolbox: Joi.any(),
-      resolve: {
-        modules: Joi.any()
-      }
-    })
-  }
-);
+});
 
 module.exports = config;
