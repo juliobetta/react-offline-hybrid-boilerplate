@@ -6,7 +6,6 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const validate = require('webpack-validator');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const formatter = require('eslint-formatter-pretty');
@@ -14,13 +13,10 @@ const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const baseConfig = require('./base');
 
-const Joi  = validate.Joi;
 const port = process.env.PORT || 8080;
 const root = '../..';
 
-module.exports = validate(merge(baseConfig, {
-  debug: true,
-
+module.exports = merge(baseConfig, {
   devtool: 'inline-source-map',
 
   output: {
@@ -33,15 +29,15 @@ module.exports = validate(merge(baseConfig, {
     loaders: [
       {
         test: /\.(css|scss)$/,
-        exclude: /\.\/app/,
+        exclude: /(\.\/app)/,
         loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style',
-          loader: 'css?sourceMaps&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass!toolbox'
+          fallbackLoader: 'style-loader',
+          loader: 'css-loader?sourceMaps&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass-loader!toolbox-loader'
         })
       },
       {
         test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?.*)?$/,
-        loader: 'file',
+        loader: 'file-loader',
         query: {
           name: 'assets/media/[name].[ext]'
         }
@@ -49,11 +45,16 @@ module.exports = validate(merge(baseConfig, {
     ]
   },
 
-  postcss: [autoprefixer],
-
-  toolbox: { theme: './app/theme/_config.scss' },
-
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        context: __dirname,
+        debug: true,
+        postcss: [autoprefixer],
+        toolbox: { theme: './app/theme/_config.scss' },
+      }
+    }),
+
     new webpack.optimize.OccurrenceOrderPlugin(),
 
     new ExtractTextPlugin({
@@ -63,10 +64,8 @@ module.exports = validate(merge(baseConfig, {
 
     // NODE_ENV should be production so that modules do not perform certain development checks
     new webpack.DefinePlugin({
-      'process.env': {
-        'ENV'      : JSON.stringify('web'),
-        'NODE_ENV' : JSON.stringify('development')
-      }
+      'process.env.ENV'      : JSON.stringify('web'),
+      'process.env.NODE_ENV' : JSON.stringify('development')
     }),
 
     new HtmlWebpackPlugin({
@@ -83,17 +82,8 @@ module.exports = validate(merge(baseConfig, {
 
   devServer: {
     host: '0.0.0.0',
-    port: port,
+    port: +port,
     historyApiFallback: true,
     contentBase: './'
   }
-}), {
-    schemaExtension: Joi.object({
-      sassLoader: Joi.any(),
-      toolbox: Joi.any(),
-      resolve: {
-        modules: Joi.any()
-      }
-    })
-  }
-);
+});

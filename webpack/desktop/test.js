@@ -2,15 +2,14 @@
 
 // for babel-plugin-webpack-loaders
 require('babel-register');
+const webpack      = require('webpack');
 const autoprefixer = require('autoprefixer');
 const resolve      = require('path').resolve;
-const validate     = require('webpack-validator');
 const devConfig    = require('./development');
-const Joi          = validate.Joi;
 
 const root = '../..';
 
-module.exports = validate({
+module.exports = {
   output: { libraryTarget: 'commonjs2' },
 
   resolve: {
@@ -24,11 +23,12 @@ module.exports = validate({
     },
 
     modules: [
+      resolve(__dirname, `${root}/app`),
       resolve(__dirname, `${root}/app/scripts`),
       resolve(__dirname, `${root}/node_modules`)
     ],
 
-    extensions: ['', '.js', '.jsx', '.json'],
+    extensions: ['.js', '.jsx', '.json'],
   },
 
   module: {
@@ -40,24 +40,31 @@ module.exports = validate({
         exclude: /\.\/app/,
         loaders: [
           'style-loader',
-          'css-loader?sourceMaps&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass!toolbox'
+          'css-loader?sourceMaps&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass-loader!toolbox-loader'
         ]
       },
-      { test: /\.woff(\?.*)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.woff2(\?.*)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.ttf(\?.*)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.svg(\?.*)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
+      { test: /\.woff(\?.*)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.woff2(\?.*)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+      { test: /\.ttf(\?.*)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
+      { test: /\.svg(\?.*)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
     ]
   },
 
-  postcss: [autoprefixer],
-  toolbox: { theme: './app/theme/_config.scss' },
-}, {
-  schemaExtension: Joi.object({
-    sassLoader: Joi.any(),
-    toolbox: Joi.any(),
-    resolve: {
-      modules: Joi.any()
-    }
-  })
-});
+
+
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        context: __dirname,
+        postcss: [autoprefixer],
+        toolbox: { theme: './app/theme/_config.scss' }
+      }
+    }),
+
+    // NODE_ENV should be production so that modules do not perform certain development checks
+    new webpack.DefinePlugin({
+      'process.env.ENV'        : JSON.stringify('desktop'),
+      'process.env.NODE_ENV'   : JSON.stringify('test')
+    }),
+  ]
+};
